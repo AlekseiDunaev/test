@@ -7,13 +7,7 @@
 
 #include "tetris.h"
 
-int main(int argc, char** argv) {
-
-    /*
-    WINDOW *win, *win_info;
-    game_t *game = NULL;
-    figure_t *tetramino = NULL;
-    */
+void init_ncurses() {
 
     if (!initscr()) {
         fprintf(stderr, "Error initialising ncurses.\n");
@@ -37,6 +31,12 @@ int main(int argc, char** argv) {
     nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
     
+}
+
+int main(int argc, char** argv) {
+
+    init_ncurses();
+
     int offsety = (LINES - HEIGH_WINDOW) / 2;
     int offsetx = (COLS - WIDTH_WINDOW) / 2;
 
@@ -53,14 +53,15 @@ int main(int argc, char** argv) {
 
     figure_t fantom;
 
-    game = (game_t *) malloc(sizeof(game_t));
+    game = (game_t *)malloc(sizeof(game_t));
 
     game -> next_tetramino = next_figure_number;
     game -> score = 0;
     game -> level = 0;
     game -> tick_till_down = SPEED_LEVELS[0];
+    game -> is_paint = FALSE;
     
-    tetramino = (figure_t *) malloc(sizeof(figure_t));
+    tetramino = (figure_t *)malloc(sizeof(figure_t));
     *tetramino = figures[figure_number];
     
     int ch;
@@ -74,6 +75,7 @@ int main(int argc, char** argv) {
                     tetramino -> x--;
                     clean_figure();
                     paint_figure();
+                    game -> is_paint = TRUE;
                 }
                 break;
             case KEY_RIGHT:
@@ -81,6 +83,7 @@ int main(int argc, char** argv) {
                     tetramino -> x++;
                     clean_figure();
                     paint_figure();
+                    game -> is_paint = TRUE;
                 }
                 break;
             case KEY_UP:
@@ -90,6 +93,7 @@ int main(int argc, char** argv) {
                     clean_figure();
                     *tetramino = fantom;
                     paint_figure();
+                    game -> is_paint = TRUE;
                 }
             case KEY_DOWN:
                 step();
@@ -98,7 +102,12 @@ int main(int argc, char** argv) {
         }
 
         tick(tetramino);
-        paint();
+
+        if (game -> is_paint) {
+            paint();
+            game -> is_paint = FALSE;
+        }
+
         usleep(10000);
     
     }

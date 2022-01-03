@@ -284,6 +284,7 @@ void tick() {
     if (!(game -> tick_till_down)) {
         step(tetramino);
         game -> tick_till_down = SPEED_LEVELS[game -> level];
+        game -> is_paint = TRUE;
     }
 }
 
@@ -316,49 +317,8 @@ void quit() {
     delwin(win);
     delwin(win_info);
 
-/*
-typedef struct {
-    int shape[4][4];
-    int y, x, prev_y, prev_x;
-    bool down, left, right, rotate;
-} figure_t;
-
-typedef struct {
-    int next_tetramino;
-    int score;
-    int level;
-    int tick_till_down;
-} game_t;
-*/
-
-    /*
-    for (int i = 0; i < sizeof(figures); i++) {
-        for (int j = 0; j < FIGURE_SIZE; j++) {
-            for (int k = 0; k < FIGURE_SIZE; k++) {
-                free(figures[i].shape[j][k]);
-            }
-        }
-        free(figures[i].x);
-        free(figures[i].y);
-        free(figures[i].prev_y);
-        free(figures[i].prev_x);
-        free(figures[i].down);
-        free(figures[i].left);
-        free(figures[i].right);
-        free(figures[i].rotate);
-        free(figures[i]);
-    }
-
-    free(figures);
-    */
-
-    /*
-    free(game -> next_tetramino);
-    free(game -> score);
-    free(game -> level);
-    free(game -> tick_till_down);
+    free(tetramino);
     free(game);
-    */
 
     endwin();
 

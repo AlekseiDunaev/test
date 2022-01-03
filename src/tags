@@ -1,0 +1,53 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+FIGURE_SIZE	tetris.h	16;"	d
+GLASS_HEIGHT	tetris.h	11;"	d
+GLASS_WIDTH	tetris.h	12;"	d
+HEIGH_WINDOW	tetris.h	7;"	d
+HEIGH_WINDOW_INFO	tetris.h	9;"	d
+LINES_BONUS	tetris.c	/^int LINES_BONUS[5] = {0, 100, 200, 400, 800 };$/;"	v
+MAX_LEVEL	tetris.h	17;"	d
+SPAN	tetris.h	13;"	d
+SPEED_LEVELS	tetris.c	/^int SPEED_LEVELS[MAX_LEVEL + 1] = {$/;"	v
+START_X_POS	tetris.h	15;"	d
+START_Y_POS	tetris.h	14;"	d
+TETRIS_H	tetris.h	2;"	d
+WIDTH_WINDOW	tetris.h	8;"	d
+WIDTH_WINDOW_INFO	tetris.h	10;"	d
+check_move	tetris.c	/^void check_move(figure_t *t) {$/;"	f
+clean_figure	tetris.c	/^void clean_figure() {$/;"	f
+down	tetris.h	/^    bool down, left, right, rotate;$/;"	m	struct:__anon1
+figure_t	tetris.h	/^} figure_t;$/;"	t	typeref:struct:__anon1
+figures	tetris.c	/^figure_t figures[] =$/;"	v
+fill_glass	tetris.c	/^void fill_glass() {$/;"	f
+game	tetris.h	/^game_t *game;$/;"	v
+game_t	tetris.h	/^} game_t;$/;"	t	typeref:struct:__anon2
+glass	tetris.c	/^int glass[GLASS_HEIGHT + 1][GLASS_WIDTH + 2] = {$/;"	v
+glass_shift	tetris.c	/^void glass_shift(int line) {$/;"	f
+left	tetris.h	/^    bool down, left, right, rotate;$/;"	m	struct:__anon1
+level	tetris.h	/^    int level;$/;"	m	struct:__anon2
+main	test.c	/^int main(int argc, char** argv) {$/;"	f
+next_tetramino	tetris.h	/^    int next_tetramino;$/;"	m	struct:__anon2
+paint	tetris.c	/^void paint() {$/;"	f
+paint_figure	tetris.c	/^void paint_figure() {$/;"	f
+prev_x	tetris.h	/^    int y, x, prev_y, prev_x;$/;"	m	struct:__anon1
+prev_y	tetris.h	/^    int y, x, prev_y, prev_x;$/;"	m	struct:__anon1
+quit	tetris.c	/^void quit() {$/;"	f
+refresh_glass	tetris.c	/^void refresh_glass() {$/;"	f
+right	tetris.h	/^    bool down, left, right, rotate;$/;"	m	struct:__anon1
+rotate	tetris.c	/^void rotate(figure_t *t) {$/;"	f
+rotate	tetris.h	/^    bool down, left, right, rotate;$/;"	m	struct:__anon1
+score	tetris.h	/^    int score;$/;"	m	struct:__anon2
+shape	tetris.h	/^    int shape[4][4];$/;"	m	struct:__anon1
+step	tetris.c	/^void step() {$/;"	f
+tetramino	tetris.h	/^figure_t *tetramino;$/;"	v
+tick	tetris.c	/^void tick() {$/;"	f
+tick_till_down	tetris.h	/^    int tick_till_down;$/;"	m	struct:__anon2
+win	tetris.h	/^WINDOW *win, *win_info;$/;"	v
+win_info	tetris.h	/^WINDOW *win, *win_info;$/;"	v
+x	tetris.h	/^    int y, x, prev_y, prev_x;$/;"	m	struct:__anon1
+y	tetris.h	/^    int y, x, prev_y, prev_x;$/;"	m	struct:__anon1

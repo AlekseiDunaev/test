@@ -31,6 +31,7 @@ typedef struct {
     int score;
     int level;
     int tick_till_down;
+    bool is_paint;
 } game_t;
 
 extern figure_t figures[];
