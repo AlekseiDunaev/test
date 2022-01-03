@@ -1,17 +1,78 @@
-CC=gcc-9
-TARGET=test
-LIB=ncurses
+CC=gcc
+FLAGS=-Wall -pedantic
+#INC=-Isrc/
+# CFLAGS=$(FLAGS) -c -g --std=c99 $(INC)
+CFLAGS=$(FLAGS) -c -g --std=gnu99
+LFLAGS=$(FLAGS) -lncurses
+DIR_GUARD=@mkdir -p $(@D)
 
-.PHONY: run clean
+# Build configurations.
+#CFG=release
+#ifeq ($(CFG),debug)
+#FLAGS += -g -DDEBUG -DSMB_DEBUG
+#endif
+#ifneq ($(CFG),debug)
+#ifneq ($(CFG),release)
+#	@echo "Invalid configuration "$(CFG)" specified."
+#	@echo "You must specify a configuration when running make, e.g."
+#	@echo "  make CFG=debug"
+#	@echo "Choices are 'release', 'debug'."
+#	@exit 1
+#endif
+#endif
 
-$TARGET: *.c
-	$(CC) -g3 -o $(TARGET) $(TARGET).c -l$(LIB)
+#SDL=yes
+#ifeq ($(SDL),yes)
+#CFLAGS += `sdl-config --cflags` -DWITH_SDL=1
+#LFLAGS += `sdl-config --libs` -lSDL_mixer
+#endif
+#ifneq ($(SDL),yes)
+#ifneq ($(SDL),no)
+#	@echo "Invalid SDL configuration "$(SDL)" specified."
+#	@echo "You must specify the SDL configuration when running make, e.g."
+#	@echo "  make SDL=yes"
+#	@echo "Choices are 'yes', 'no'."
+#	@exit 1
+#endif
+#endif
 
-run: $TARGET
-	./$(TARGET)
+# Sources and Objects
+SOURCES=$(shell find -type f -name "*.c")
+OBJECTS=$(patsubst %.c,obj/%.o,$(SOURCES))
+DEPS=$(patsubst %.c,deps/%.d,$(SOURCES))
 
-r: run
+# Main targets
+.PHONY: all clean clean_all print
+
+all: bin/main
+
+GTAGS: $(SOURCES)
+	gtags
 
 clean:
-	rm $(TARGET) *.o
+	rm -rf obj/* bin/* *.gch GTAGS GPATH GRTAGS
 
+clean_all:
+	rm -rf bin/* obj/* deps/*
+
+# --- Compile Rule
+obj/%.o: %.c
+	$(DIR_GUARD)
+	$(CC) $(CFLAGS) $< -o $@
+
+# --- Link Rule
+bin/main: $(OBJECTS)
+	$(DIR_GUARD)
+	$(CC) $(OBJECTS) $(LFLAGS) -o bin/main
+
+# --- Dependency Rule
+deps/%.d: %.c
+	$(DIR_GUARD)
+	$(CC) $(CFLAGS) -MM $< | sed -e 's/~\(.*\)\.o:/\1.d \1.o:/' > $@
+
+#ifneq "$(MAKECMDGOALS)" "clean_all"
+#-include $(DEPS)
+#endif
+
+print:
+	@echo ""$(DIR_GUARD)""
