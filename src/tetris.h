@@ -32,6 +32,7 @@ typedef struct {
     int level;
     int tick_till_down;
     bool is_paint;
+    bool game_over;
 } game_t;
 
 extern figure_t figures[];

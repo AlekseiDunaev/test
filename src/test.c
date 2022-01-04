@@ -8,7 +8,7 @@
 #include "tetris.h"
 
 void init_ncurses() {
-
+    
     if (!initscr()) {
         fprintf(stderr, "Error initialising ncurses.\n");
         exit(-1);
@@ -33,10 +33,8 @@ void init_ncurses() {
     
 }
 
-int main(int argc, char** argv) {
-
-    init_ncurses();
-
+void init_windows() {
+    
     int offsety = (LINES - HEIGH_WINDOW) / 2;
     int offsetx = (COLS - WIDTH_WINDOW) / 2;
 
@@ -46,12 +44,40 @@ int main(int argc, char** argv) {
     win_info = newwin(HEIGH_WINDOW_INFO, WIDTH_WINDOW_INFO, offsety + 1, offsetx + GLASS_WIDTH + 4);
     wattron(win_info, A_BOLD | COLOR_PAIR(1));
 
+}
+
+void game_over() {
+
+    wclear(win_info);
+ 
+    wmove(win_info, 1, 1);
+    waddstr(win_info, "GAME OVER");
+ 
+    wmove(win_info, 7, 1);
+    waddstr(win_info, "SCORE");
+ 
+    wmove(win_info, 7, 7);
+    wattron(win_info, COLOR_PAIR(2));
+    wprintw(win_info, "%d", (game -> score));
+    wattroff(win_info, COLOR_PAIR(2));
+    wattron(win_info, A_BOLD | COLOR_PAIR(1));
+
+    box(win_info, 0, 0);
+
+    wrefresh(win_info);
+
+}
+
+
+int main(int argc, char** argv) {
+
+    init_ncurses();
+    init_windows();
+
     srand(time(NULL));
 
     int figure_number = rand() % 7;
     int next_figure_number = rand() % 7;
-
-    figure_t fantom;
 
     game = (game_t *)malloc(sizeof(game_t));
 
@@ -60,11 +86,13 @@ int main(int argc, char** argv) {
     game -> level = 0;
     game -> tick_till_down = SPEED_LEVELS[0];
     game -> is_paint = FALSE;
+    game -> game_over = FALSE;
     
     tetramino = (figure_t *)malloc(sizeof(figure_t));
     *tetramino = figures[figure_number];
     
     int ch;
+    figure_t fantom;
     
     while((ch = getch()) != 'q') {
         tetramino -> prev_x = tetramino -> x;
@@ -103,10 +131,13 @@ int main(int argc, char** argv) {
 
         tick(tetramino);
 
+        if (game -> game_over) game_over();
+
         if (game -> is_paint) {
             paint();
             game -> is_paint = FALSE;
         }
+
 
         usleep(10000);
     

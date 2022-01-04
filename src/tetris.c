@@ -162,6 +162,9 @@ void fill_glass() {
 
 void paint_figure() {
 
+    wrefresh(win);
+    wrefresh(win_info);
+
     for(int i = 0; i < FIGURE_SIZE; i++) {
        for(int j = 0; j < FIGURE_SIZE; j++) {
            if (tetramino -> shape[i][j]) {
@@ -268,13 +271,15 @@ void step() {
     if (tetramino -> down) {
         clean_figure(tetramino);
         paint_figure(tetramino);
+    } else if (!(tetramino -> down) && (tetramino -> y) == 1) {
+        game -> game_over = TRUE;
+        game -> is_paint = FALSE;
     } else {
         tetramino -> y--;
         fill_glass(tetramino);
 
         *tetramino = figures[game -> next_tetramino];
         game -> next_tetramino = rand() % 7;
-
     }
 
 }
