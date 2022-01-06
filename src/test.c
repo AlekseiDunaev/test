@@ -46,6 +46,24 @@ void init_windows() {
 
 }
 
+void new_game() {
+
+    glass_fill();
+
+    int figure_number = rand() % 7;
+    int next_figure_number = rand() % 7;
+
+    game -> next_tetramino = next_figure_number;
+    game -> score = 0;
+    game -> level = 0;
+    game -> tick_till_down = SPEED_LEVELS[0];
+    game -> is_paint = FALSE;
+    game -> game_over = FALSE;
+ 
+    *tetramino = figures[figure_number];
+
+}
+
 void game_over() {
 
     wclear(win_info);
@@ -66,34 +84,27 @@ void game_over() {
 
     wrefresh(win_info);
 
-}
+    while(getch() != 'n');
 
+    new_game();
+
+}
 
 int main(int argc, char** argv) {
 
+    int ch;
+    figure_t fantom;
+
+    game = (game_t *)malloc(sizeof(game_t));
+    tetramino = (figure_t *)malloc(sizeof(figure_t));
+    
     init_ncurses();
     init_windows();
 
     srand(time(NULL));
 
-    int figure_number = rand() % 7;
-    int next_figure_number = rand() % 7;
+    new_game();
 
-    game = (game_t *)malloc(sizeof(game_t));
-
-    game -> next_tetramino = next_figure_number;
-    game -> score = 0;
-    game -> level = 0;
-    game -> tick_till_down = SPEED_LEVELS[0];
-    game -> is_paint = FALSE;
-    game -> game_over = FALSE;
-    
-    tetramino = (figure_t *)malloc(sizeof(figure_t));
-    *tetramino = figures[figure_number];
-    
-    int ch;
-    figure_t fantom;
-    
     while((ch = getch()) != 'q') {
         tetramino -> prev_x = tetramino -> x;
         check_move(tetramino);
@@ -129,15 +140,14 @@ int main(int argc, char** argv) {
                 break;
         }
 
-        tick(tetramino);
-
         if (game -> game_over) game_over();
+        
+        tick(tetramino);
 
         if (game -> is_paint) {
             paint();
             game -> is_paint = FALSE;
         }
-
 
         usleep(10000);
     
