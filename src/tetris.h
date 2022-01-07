@@ -44,9 +44,9 @@ game_t *game;
 figure_t *tetramino;
 
 void glass_shift(int line);
-void glass_fill();
+void set_start_glass();
 void refresh_glass();
-void fill_glass();
+void fix_figutre_in_glass();
 void paint_figure();
 void clean_figure(); 
 void paint();

@@ -48,7 +48,7 @@ void init_windows() {
 
 void new_game() {
 
-    glass_fill();
+    set_start_glass();
 
     int figure_number = rand() % 7;
     int next_figure_number = rand() % 7;
@@ -104,6 +104,7 @@ int main(int argc, char** argv) {
     srand(time(NULL));
 
     new_game();
+    paint_figure();
 
     while((ch = getch()) != 'q') {
         tetramino -> prev_x = tetramino -> x;
@@ -144,7 +145,7 @@ int main(int argc, char** argv) {
         
         tick(tetramino);
 
-        if (game -> is_paint) {
+	if (game -> is_paint) {
             paint();
             game -> is_paint = FALSE;
         }
@@ -152,7 +153,7 @@ int main(int argc, char** argv) {
         usleep(10000);
     
     }
-    
+
     getch(); 
     quit();
 
