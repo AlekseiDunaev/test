@@ -154,6 +154,7 @@ void refresh_glass() {
         }
     }
     game -> score += LINES_BONUS[lines];
+    game -> is_paint = TRUE;
 }
 
 void fix_figure_in_glass() {
@@ -172,9 +173,6 @@ void fix_figure_in_glass() {
 
 void paint_figure() {
 
-    wrefresh(win);
-    wrefresh(win_info);
-
     for(int i = 0; i < FIGURE_SIZE; i++) {
        for(int j = 0; j < FIGURE_SIZE; j++) {
            if (tetramino -> shape[i][j]) {
@@ -183,6 +181,9 @@ void paint_figure() {
            }
        }
     }
+
+    wrefresh(win);
+    wrefresh(win_info);
 
     tetramino -> prev_y = tetramino -> y;
     tetramino -> prev_x = tetramino -> x;
@@ -211,7 +212,6 @@ void paint() {
             } else {
                 waddch(win, ' ');
             }
-            paint_figure();
         }
     }
 
@@ -231,10 +231,10 @@ void paint() {
        }
     }
  
-    wmove(win_info, 7, 1);
+    wmove(win_info, 8, 1);
     waddstr(win_info, "SCORE");
  
-    wmove(win_info, 7, 7);
+    wmove(win_info, 8, 7);
     wattron(win_info, COLOR_PAIR(2));
     wprintw(win_info, "%d", (game -> score));
     wattroff(win_info, COLOR_PAIR(2));
@@ -281,8 +281,6 @@ void step() {
     if (tetramino -> down) {
         clean_figure();
         paint_figure();
-    } else if (!(tetramino -> down) && (tetramino -> y) == 0) {
-        game -> game_over = TRUE;
         game -> is_paint = FALSE;
     } else {
         tetramino -> y--;
@@ -299,7 +297,6 @@ void tick() {
     if (!(game -> tick_till_down)) {
         step();
         game -> tick_till_down = SPEED_LEVELS[game -> level];
-        game -> is_paint = TRUE;
     }
 }
 

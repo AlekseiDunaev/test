@@ -6,7 +6,7 @@
 
 #define HEIGH_WINDOW 23
 #define WIDTH_WINDOW 40
-#define HEIGH_WINDOW_INFO 11
+#define HEIGH_WINDOW_INFO 10
 #define WIDTH_WINDOW_INFO 25
 #define GLASS_HEIGHT 20
 #define GLASS_WIDTH 10
@@ -32,7 +32,6 @@ typedef struct {
     int level;
     int tick_till_down;
     bool is_paint;
-    bool game_over;
 } game_t;
 
 extern figure_t figures[];

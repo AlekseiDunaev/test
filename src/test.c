@@ -57,10 +57,12 @@ void new_game() {
     game -> score = 0;
     game -> level = 0;
     game -> tick_till_down = SPEED_LEVELS[0];
-    game -> is_paint = FALSE;
-    game -> game_over = FALSE;
+    game -> is_paint = TRUE;
  
     *tetramino = figures[figure_number];
+    refresh();
+    wrefresh(win);
+    wrefresh(win_info);
 
 }
 
@@ -70,11 +72,17 @@ void game_over() {
  
     wmove(win_info, 1, 1);
     waddstr(win_info, "GAME OVER");
+    wmove(win_info, 2, 1);
+    waddstr(win_info, "For start new game");
+    wmove(win_info, 3, 1);
+    waddstr(win_info, "press n");
+    wmove(win_info, 5, 1);
+    waddstr(win_info, "For quit press q");
  
-    wmove(win_info, 7, 1);
+    wmove(win_info, 8, 1);
     waddstr(win_info, "SCORE");
  
-    wmove(win_info, 7, 7);
+    wmove(win_info, 8, 7);
     wattron(win_info, COLOR_PAIR(2));
     wprintw(win_info, "%d", (game -> score));
     wattroff(win_info, COLOR_PAIR(2));
@@ -104,7 +112,6 @@ int main(int argc, char** argv) {
     srand(time(NULL));
 
     new_game();
-    paint_figure();
 
     while((ch = getch()) != 'q') {
         tetramino -> prev_x = tetramino -> x;
@@ -141,8 +148,12 @@ int main(int argc, char** argv) {
                 break;
         }
 
-        if (game -> game_over) game_over();
-        
+        check_move(tetramino);
+        if (!(tetramino -> down) && (tetramino -> y) == 0) {
+            game_over();
+        }
+        else paint_figure();
+
         tick(tetramino);
 
 	if (game -> is_paint) {
