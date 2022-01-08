@@ -3,7 +3,6 @@
 
 #include <string.h>
 #include <unistd.h>
-//#include <time.h>
 
 #include "tetris.h"
 
@@ -90,6 +89,45 @@ figure_t figures[] =
      },
 };
 
+point_t tetraminos[NUM_TETRAMINO][TETRAMINO_POSITIONS][POINTS] = {
+
+	{{{0, 1},{1, 0},{1, 1},{1, 2}},
+	{{0, 1},{1, 0},{1, 1},{2, 1}},
+	{{1, 0},{1, 1},{1, 2},{2, 1}},
+	{{0, 1},{1, 1},{1, 2},{2, 1}}},
+
+	{{{0, 1},{1, 1},{2, 0},{2, 1}},
+	{{1, 0},{1, 1},{1, 2},{2, 2}},
+	{{0, 1},{0, 2},{1, 1},{2, 1}},
+	{{0, 0},{1, 0},{1, 1},{1, 2}}},
+
+	{{{0, 1},{1, 0},{1, 1},{2, 0}},
+	{{0, 0},{0, 1},{1, 1},{1, 2}},
+	{{0, 1},{1, 0},{1, 1},{2, 0}},
+	{{0, 0},{0, 1},{1, 1},{1, 2}}},
+	
+	{{{0, 1},{1, 1},{1, 2},{2, 2}},
+	{{0, 1},{0, 2},{1, 0},{1, 1}},
+	{{0, 1},{1, 1},{1, 2},{2, 2}},
+	{{0, 1},{0, 2},{1, 0},{1, 1}}},
+	
+	{{{0, 1},{1, 1},{2, 1},{3, 1}},
+	{{1, 0},{1, 1},{1, 2},{1, 3}},
+	{{0, 1},{1, 1},{2, 1},{3, 1}},
+	{{1, 0},{1, 1},{1, 2},{1, 3}}},
+
+	{{{0, 1},{1, 1},{2, 1},{2, 2}},
+	{{0, 2},{1, 0},{1, 1},{1, 2}},
+	{{0, 0},{0, 1},{1, 1},{2, 1}},
+	{{1, 0},{1, 1},{1, 2},{2, 0}}},
+
+	{{{0, 0},{0, 1},{1, 0},{1, 1}},
+	{{0, 0},{0, 1},{1, 0},{1, 1}},
+	{{0, 0},{0, 1},{1, 0},{1, 1}},
+	{{0, 0},{0, 1},{1, 0},{1, 1}}},
+	
+};
+
 int glass_init[GLASS_HEIGHT + 1][GLASS_WIDTH + 2] = {
 	//0  1  2  3  4  5  6  7  8  9  10 11
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //0
@@ -166,6 +204,11 @@ void fix_figure_in_glass() {
            }
        }
     }
+    /*
+    for(int i = 0; i < FIGURE_SIZE; i++) {
+	    glass[tetraminos[tetramino -> type][tetraino -> orientation][i].y][tetraminos[tetramino -> type][tetramino -> orientation][i].x + 1]  = 1;
+    }
+    */
 
     refresh_glass();
 
@@ -182,6 +225,14 @@ void paint_figure() {
        }
     }
 
+    /*
+    for(int i = 0; i < FIGURE_SIZE; i++) {
+	wmove(win, tetraminos[tetramino -> type][tetramino -> orientation][i].y + (tetramino -> y) + 1, \
+	tetramino[tetramino -> type][tetramino -> orientation][i].x(tetramino -> x) + 2);
+	waddch(win, ' ' | A_REVERSE | COLOR_PAIR(2));
+    }
+    */
+    
     wrefresh(win);
     wrefresh(win_info);
 
@@ -199,7 +250,15 @@ void clean_figure() {
             }
         }
     }
-    
+
+    /*
+    for(int i = 0; i < FIGURE_SIZE; i++) {
+	wmove(win, tetraminos[tetramino -> type][tetramino -> orientation][i].y + (tetramino -> prev_y) + 1, \
+	tetraminos[tetramino -> type][tetramino -> orientation][i].x(tetramino -> prev_x) + 2);
+	waddch(win, ' ');
+    }
+    */
+ 
 }
 
 void paint() {
@@ -230,6 +289,14 @@ void paint() {
            }
        }
     }
+
+    /*
+    for(int i = 0; i < FIGURE_SIZE; i++) {
+	wmove(win_info, tetraminos[game -> next_tetramino][0][i].y + 3, \
+	tetraminos[game -> next_tetramino][0][i].x + 1);
+	waddch(win_info, ' ' | A_REVERSE | COLOR_PAIR(3));
+    }
+    */
  
     wmove(win_info, 8, 1);
     waddstr(win_info, "SCORE");
@@ -254,6 +321,23 @@ void check_move(figure_t *t) {
     t -> left = TRUE;
     t -> right = TRUE;
     t -> rotate = FALSE;
+
+    /*
+    for(int i = TETRAMINO_POSITIONS; i >= 0; i--) {
+	if (glass[(t -> y) + tetraminos[t -> type][t -> orientation][i].y + 1] \
+		[(t -> x) + tetraminos[t -> type][t -> orientation][i].x]) {
+		t -> down = FALSE;
+	};
+	if (glass[(t -> y) + tetraminos[t -> type][t -> orientation][i].y] \
+		[(t -> x) + tetraminos[t -> type][t -> orientation][i].x + 2]) {
+		t -> right = FALSE;
+	};
+	if (glass[(t -> y) + tetraminos[t -> type][t -> orientation][i].y] \
+		[(t -> x) + tetraminos[t -> type][t -> orientation][i].x] ) {
+		t -> left = FALSE;
+	};
+    }
+    */
 
     for(int i = FIGURE_SIZE - 1; i >= 0; i--) {
         for(int j = FIGURE_SIZE - 1; j >= 0; j--) {
@@ -303,6 +387,7 @@ void tick() {
 void rotate(figure_t *t) {
     figure_t temp;
     temp = *t;
+    //(t -> orientation == 3) ? t -> orientation = 0: t -> orientation++;
 
     for (int i = 0; i < FIGURE_SIZE; i++) {
         for (int j = 0; j < FIGURE_SIZE; j++) {
@@ -315,8 +400,10 @@ void rotate(figure_t *t) {
 
     *t = temp;
     check_move(t);
+    //check_move(t);
 
     if (t -> down && t -> right && t -> left) t -> rotate = TRUE;
+    //if (t -> down && t -> right && t -> left) t -> rotate = TRUE;
 }
 
 void quit() {

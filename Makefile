@@ -5,6 +5,8 @@ CFLAGS=$(FLAGS) -c -g --std=gnu99 $(INC)
 LFLAGS=$(FLAGS) -lncurses
 DIR_GUARD=@mkdir -p $(@D)
 
+TARGET=test
+
 # Sources and Objects
 SOURCES=$(shell find src/ -type f -name "*.c")
 OBJECTS=$(patsubst src/%.c,obj/%.o,$(SOURCES))
@@ -13,7 +15,7 @@ DEPS=$(patsubst src/%.c,deps/%.d,$(SOURCES))
 # Main targets
 .PHONY: all clean clean_all print
 
-all: bin/main
+all: bin/$(TARGET)
 
 #GTAGS: $(SOURCES)
 #	gtags
@@ -25,9 +27,9 @@ clean_all:
 	rm -rf bin/* obj/* deps/*
 
 # --- Link Rule
-bin/main: $(OBJECTS)
+bin/$(TARGET): $(OBJECTS)
 	$(DIR_GUARD)
-	$(CC) $(OBJECTS) $(LFLAGS) -o bin/main
+	$(CC) $(OBJECTS) $(LFLAGS) -o bin/$(TARGET)
 
 # --- Compile Rule
 obj/%.o: src/%.c

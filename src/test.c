@@ -60,6 +60,12 @@ void new_game() {
     game -> is_paint = TRUE;
  
     *tetramino = figures[figure_number];
+    t -> orientation = 0;
+    t -> y = START_Y_POS;
+    t -> x = START_X_POS;
+    t -> prev_y = START_Y_POS;
+    t -> prev_x = START_X_POS;
+
     refresh();
     wrefresh(win);
     wrefresh(win_info);
@@ -102,6 +108,7 @@ int main(int argc, char** argv) {
 
     int ch;
     figure_t fantom;
+    tetramino_t fantom_t;
 
     game = (game_t *)malloc(sizeof(game_t));
     tetramino = (figure_t *)malloc(sizeof(figure_t));
@@ -148,9 +155,48 @@ int main(int argc, char** argv) {
                 break;
         }
 
+ /*
+    while((ch = getch()) != 'q') {
+        t -> prev_x = t -> x;
+        check_move();
+        switch(ch) {
+            case KEY_LEFT:
+                if (t -> left) {
+                    t -> x--;
+                    clean_figure();
+                    paint_figure();
+                    game -> is_paint = TRUE;
+                }
+                break;
+            case KEY_RIGHT:
+                if (t -> right) {
+                    t -> x++;
+                    clean_figure();
+                    paint_figure();
+                    game -> is_paint = TRUE;
+                }
+                break;
+            case KEY_UP:
+                fantom_t = *t;
+                rotate(&fantom_t);
+                if (fantom_t.rotate) {
+                    clean_figure();
+                    *t = fantom_t;
+                    paint_figure();
+                    game -> is_paint = TRUE;
+                }
+            case KEY_DOWN:
+                step();
+            default:
+                break;
+        }
+	*/
+
+
         check_move(tetramino);
         if (!(tetramino -> down) && (tetramino -> y) == 0) {
-            game_over();
+		fix_figure_in_glass();
+		game_over();
         }
         else paint_figure();
 
