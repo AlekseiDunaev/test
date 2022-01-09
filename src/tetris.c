@@ -196,7 +196,8 @@ void refresh_glass() {
 }
 
 void fix_figure_in_glass() {
-    
+   
+    /*	
     for(int i = 0; i < FIGURE_SIZE; i++) {
        for(int j = 0; j < FIGURE_SIZE; j++) {
            if (tetramino->shape[i][j]) {
@@ -204,11 +205,11 @@ void fix_figure_in_glass() {
            }
        }
     }
-    /*
-    for(int i = 0; i < FIGURE_SIZE; i++) {
-	    glass[tetraminos[tetramino -> type][tetraino -> orientation][i].y][tetraminos[tetramino -> type][tetramino -> orientation][i].x + 1]  = 1;
-    }
     */
+
+    for(int i = 0; i < FIGURE_SIZE; i++) {
+	    glass[tetraminos[tetramino -> type][tetramino -> orientation][i].y][tetraminos[tetramino -> type][tetramino -> orientation][i].x + 1]  = 1;
+    }
 
     refresh_glass();
 
@@ -216,6 +217,7 @@ void fix_figure_in_glass() {
 
 void paint_figure() {
 
+	/*
     for(int i = 0; i < FIGURE_SIZE; i++) {
        for(int j = 0; j < FIGURE_SIZE; j++) {
            if (tetramino -> shape[i][j]) {
@@ -224,14 +226,13 @@ void paint_figure() {
            }
        }
     }
+    */
 
-    /*
     for(int i = 0; i < FIGURE_SIZE; i++) {
 	wmove(win, tetraminos[tetramino -> type][tetramino -> orientation][i].y + (tetramino -> y) + 1, \
-	tetramino[tetramino -> type][tetramino -> orientation][i].x(tetramino -> x) + 2);
+	tetraminos[tetramino -> type][tetramino -> orientation][i].x + (tetramino -> x) + 2);
 	waddch(win, ' ' | A_REVERSE | COLOR_PAIR(2));
     }
-    */
     
     wrefresh(win);
     wrefresh(win_info);
@@ -241,7 +242,8 @@ void paint_figure() {
 }
 
 void clean_figure() {
-    
+
+	/*    
     for(int i = 0; i < FIGURE_SIZE; i++) {
         for(int j = 0; j < FIGURE_SIZE; j++) {
             if (tetramino->shape[i][j]) {
@@ -250,14 +252,13 @@ void clean_figure() {
             }
         }
     }
+    */
 
-    /*
     for(int i = 0; i < FIGURE_SIZE; i++) {
 	wmove(win, tetraminos[tetramino -> type][tetramino -> orientation][i].y + (tetramino -> prev_y) + 1, \
-	tetraminos[tetramino -> type][tetramino -> orientation][i].x(tetramino -> prev_x) + 2);
+	tetraminos[tetramino -> type][tetramino -> orientation][i].x + (tetramino -> prev_x) + 2);
 	waddch(win, ' ');
     }
-    */
  
 }
 
@@ -274,13 +275,14 @@ void paint() {
         }
     }
 
-    figure_t next_tetramino = figures[game -> next_tetramino];
+    //figure_t next_tetramino = figures[game -> next_tetramino];
 
     wclear(win_info);
  
     wmove(win_info, 1, 1);
     waddstr(win_info, "NEXT");
 
+    /*
     for(int i = 0; i < FIGURE_SIZE; i++) {
        for(int j = 0; j < FIGURE_SIZE; j++) {
            if (next_tetramino.shape[i][j]) {
@@ -289,14 +291,13 @@ void paint() {
            }
        }
     }
+    */
 
-    /*
     for(int i = 0; i < FIGURE_SIZE; i++) {
 	wmove(win_info, tetraminos[game -> next_tetramino][0][i].y + 3, \
 	tetraminos[game -> next_tetramino][0][i].x + 1);
 	waddch(win_info, ' ' | A_REVERSE | COLOR_PAIR(3));
     }
-    */
  
     wmove(win_info, 8, 1);
     waddstr(win_info, "SCORE");
@@ -315,14 +316,14 @@ void paint() {
 
 }
 
-void check_move(figure_t *t) {
+//void check_move(figure_t *t) {
+void check_move(tetramino_t *t) {
 
     t -> down = TRUE;
     t -> left = TRUE;
     t -> right = TRUE;
     t -> rotate = FALSE;
 
-    /*
     for(int i = TETRAMINO_POSITIONS; i >= 0; i--) {
 	if (glass[(t -> y) + tetraminos[t -> type][t -> orientation][i].y + 1] \
 		[(t -> x) + tetraminos[t -> type][t -> orientation][i].x]) {
@@ -337,8 +338,8 @@ void check_move(figure_t *t) {
 		t -> left = FALSE;
 	};
     }
-    */
 
+    /*
     for(int i = FIGURE_SIZE - 1; i >= 0; i--) {
         for(int j = FIGURE_SIZE - 1; j >= 0; j--) {
            if (t -> shape[i][j])  {
@@ -354,6 +355,7 @@ void check_move(figure_t *t) {
            }
        }
     }
+    */
 
 }
 
@@ -370,7 +372,8 @@ void step() {
         tetramino -> y--;
         fix_figure_in_glass();
 
-        *tetramino = figures[game -> next_tetramino];
+        //*tetramino = figures[game -> next_tetramino];
+        tetramino -> type = game -> next_tetramino;
         game -> next_tetramino = rand() % 7;
     }
 
@@ -384,11 +387,13 @@ void tick() {
     }
 }
 
-void rotate(figure_t *t) {
-    figure_t temp;
-    temp = *t;
-    //(t -> orientation == 3) ? t -> orientation = 0: t -> orientation++;
+//void rotate(figure_t *t) {
+void rotate(tetramino_t *t) {
+    //figure_t temp;
+    //temp = *t;
+    (t -> orientation == 3) ? t -> orientation = 0: t -> orientation++;
 
+    /*
     for (int i = 0; i < FIGURE_SIZE; i++) {
         for (int j = 0; j < FIGURE_SIZE; j++) {
             if ((i - 2) == 0) temp.shape[3 - j][2] = t -> shape[i][j];
@@ -397,13 +402,14 @@ void rotate(figure_t *t) {
             if ((i - 2) == -2) temp.shape[3 - j][0] = t -> shape[i][j];
         }
     }
+    */
 
-    *t = temp;
-    check_move(t);
+    //*t = temp;
     //check_move(t);
+    check_move(t);
 
-    if (t -> down && t -> right && t -> left) t -> rotate = TRUE;
     //if (t -> down && t -> right && t -> left) t -> rotate = TRUE;
+    if (t -> down && t -> right && t -> left) t -> rotate = TRUE;
 }
 
 void quit() {

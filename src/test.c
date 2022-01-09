@@ -59,12 +59,13 @@ void new_game() {
     game -> tick_till_down = SPEED_LEVELS[0];
     game -> is_paint = TRUE;
  
-    *tetramino = figures[figure_number];
-    t -> orientation = 0;
-    t -> y = START_Y_POS;
-    t -> x = START_X_POS;
-    t -> prev_y = START_Y_POS;
-    t -> prev_x = START_X_POS;
+    //*tetramino = figures[figure_number];
+    tetramino -> type = figure_number;
+    tetramino -> orientation = 0;
+    tetramino -> y = START_Y_POS;
+    tetramino -> x = START_X_POS;
+    tetramino -> prev_y = START_Y_POS;
+    tetramino -> prev_x = START_X_POS;
 
     refresh();
     wrefresh(win);
@@ -107,11 +108,11 @@ void game_over() {
 int main(int argc, char** argv) {
 
     int ch;
-    figure_t fantom;
-    tetramino_t fantom_t;
+    //figure_t fantom;
+    tetramino_t fantom;
 
     game = (game_t *)malloc(sizeof(game_t));
-    tetramino = (figure_t *)malloc(sizeof(figure_t));
+    //tetramino = (figure_t *)malloc(sizeof(figure_t));
     
     init_ncurses();
     init_windows();
