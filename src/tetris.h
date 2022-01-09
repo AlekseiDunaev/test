@@ -35,12 +35,6 @@ typedef struct {
 } tetramino_t;
 
 typedef struct {
-    int shape[4][4];
-    int y, x, prev_y, prev_x;
-    bool down, left, right, rotate;
-} figure_t;
-
-typedef struct {
     int next_tetramino;
     int score;
     int level;
@@ -48,12 +42,10 @@ typedef struct {
     bool is_paint;
 } game_t;
 
-extern figure_t figures[7];
 extern point_t tetraminos[NUM_TETRAMINO][TETRAMINO_POSITIONS][POINTS];
 
 WINDOW *win, *win_info;
 game_t *game;
-//figure_t *tetramino;
 tetramino_t *tetramino;
 
 extern int glass[GLASS_HEIGHT + 1][GLASS_WIDTH + 2];
@@ -65,11 +57,9 @@ void fix_figure_in_glass();
 void paint_figure();
 void clean_figure(); 
 void paint();
-//void check_move(figure_t *t);
 void check_move(tetramino_t *t);
 void step();
 void tick();
-//void rotate(figure_t *t);
 void rotate(tetramino_t *t);
 void quit();
 

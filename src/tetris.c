@@ -15,80 +15,6 @@ int SPEED_LEVELS[MAX_LEVEL + 1] = {
 
 int LINES_BONUS[5] = {0, 100, 200, 400, 800 };
 
-figure_t figures[] =
-{
-    {
-         {
-             {0, 0, 1, 0},
-             {0, 0, 1, 0},
-             {0, 1, 1, 0},
-             {0, 0, 0, 0},
-         },
-         START_Y_POS, START_X_POS, START_Y_POS, START_X_POS,
-         FALSE, FALSE, FALSE, FALSE,
-     },
-     {
-         {
-            {0, 1, 0, 0},
-            {0, 1, 0, 0},
-            {0, 1, 1, 0},
-            {0, 0, 0, 0},
-         },
-         START_Y_POS, START_X_POS, START_Y_POS, START_X_POS,
-         FALSE, FALSE, FALSE, FALSE,
-     },
-     {
-         { //0  1  2  3
-            {0, 0, 1, 0}, //0
-            {0, 1, 1, 1}, //1
-            {0, 0, 0, 0}, //2
-            {0, 0, 0, 0}, //3
-         },
-         START_Y_POS, START_X_POS, START_Y_POS, START_X_POS,
-         FALSE, FALSE, FALSE, FALSE,
-     },
-     {
-         {
-            {0, 1, 1, 0},
-            {0, 1, 1, 0},
-            {0, 0, 0, 0},
-            {0, 0, 0, 0},
-         },
-         START_Y_POS, START_X_POS, START_Y_POS, START_X_POS,
-         FALSE, FALSE, FALSE, FALSE,
-     },
-     {
-         {
-            {0, 1, 0, 0},
-            {0, 1, 1, 0},
-            {0, 0, 1, 0},
-            {0, 0, 0, 0},
-         },
-         START_Y_POS, START_X_POS, START_Y_POS, START_X_POS,
-         FALSE, FALSE, FALSE, FALSE,
-     },
-     {
-         {
-            {0, 0, 1, 0},
-            {0, 1, 1, 0},
-            {0, 1, 0, 0},
-            {0, 0, 0, 0},
-         },
-         START_Y_POS, START_X_POS, START_Y_POS, START_X_POS,
-         FALSE, FALSE, FALSE, FALSE,
-     },
-     {
-         {
-            {0, 0, 1, 0},
-            {0, 0, 1, 0},
-            {0, 0, 1, 0},
-            {0, 0, 1, 0},
-         },
-         START_Y_POS, START_X_POS, START_Y_POS, START_X_POS,
-         FALSE, FALSE, FALSE, FALSE,
-     },
-};
-
 point_t tetraminos[NUM_TETRAMINO][TETRAMINO_POSITIONS][POINTS] = {
 
 	{{{0, 1},{1, 0},{1, 1},{1, 2}},
@@ -189,6 +115,7 @@ void refresh_glass() {
         if (blocks == 10) {
             lines++;
             glass_shift(i);
+            i++;
         }
     }
     game -> score += LINES_BONUS[lines];
@@ -197,18 +124,9 @@ void refresh_glass() {
 
 void fix_figure_in_glass() {
    
-    /*	
     for(int i = 0; i < FIGURE_SIZE; i++) {
-       for(int j = 0; j < FIGURE_SIZE; j++) {
-           if (tetramino->shape[i][j]) {
-               glass[(tetramino -> y) + i][(tetramino -> x) + j + 1] = 1;
-           }
-       }
-    }
-    */
-
-    for(int i = 0; i < FIGURE_SIZE; i++) {
-	    glass[tetraminos[tetramino -> type][tetramino -> orientation][i].y][tetraminos[tetramino -> type][tetramino -> orientation][i].x + 1]  = 1;
+	    glass[tetraminos[tetramino -> type][tetramino -> orientation][i].y + tetramino -> y] \
+                [tetraminos[tetramino -> type][tetramino -> orientation][i].x + tetramino -> x + 1]  = 1;
     }
 
     refresh_glass();
@@ -216,17 +134,6 @@ void fix_figure_in_glass() {
 }
 
 void paint_figure() {
-
-	/*
-    for(int i = 0; i < FIGURE_SIZE; i++) {
-       for(int j = 0; j < FIGURE_SIZE; j++) {
-           if (tetramino -> shape[i][j]) {
-               wmove(win, tetramino -> y + i + 1 , tetramino -> x + j + 2);
-               waddch(win, ' ' | A_REVERSE | COLOR_PAIR(2));
-           }
-       }
-    }
-    */
 
     for(int i = 0; i < FIGURE_SIZE; i++) {
 	wmove(win, tetraminos[tetramino -> type][tetramino -> orientation][i].y + (tetramino -> y) + 1, \
@@ -242,17 +149,6 @@ void paint_figure() {
 }
 
 void clean_figure() {
-
-	/*    
-    for(int i = 0; i < FIGURE_SIZE; i++) {
-        for(int j = 0; j < FIGURE_SIZE; j++) {
-            if (tetramino->shape[i][j]) {
-                wmove(win, (tetramino -> prev_y) + i + 1, (tetramino -> prev_x) + j + 2);
-                waddch(win, ' ');
-            }
-        }
-    }
-    */
 
     for(int i = 0; i < FIGURE_SIZE; i++) {
 	wmove(win, tetraminos[tetramino -> type][tetramino -> orientation][i].y + (tetramino -> prev_y) + 1, \
@@ -275,23 +171,10 @@ void paint() {
         }
     }
 
-    //figure_t next_tetramino = figures[game -> next_tetramino];
-
     wclear(win_info);
  
     wmove(win_info, 1, 1);
     waddstr(win_info, "NEXT");
-
-    /*
-    for(int i = 0; i < FIGURE_SIZE; i++) {
-       for(int j = 0; j < FIGURE_SIZE; j++) {
-           if (next_tetramino.shape[i][j]) {
-               wmove(win_info, next_tetramino.y + i + 3, next_tetramino.x + j + 1);
-               waddch(win_info, ' ' | A_REVERSE | COLOR_PAIR(3));
-           }
-       }
-    }
-    */
 
     for(int i = 0; i < FIGURE_SIZE; i++) {
 	wmove(win_info, tetraminos[game -> next_tetramino][0][i].y + 3, \
@@ -316,7 +199,6 @@ void paint() {
 
 }
 
-//void check_move(figure_t *t) {
 void check_move(tetramino_t *t) {
 
     t -> down = TRUE;
@@ -324,9 +206,9 @@ void check_move(tetramino_t *t) {
     t -> right = TRUE;
     t -> rotate = FALSE;
 
-    for(int i = TETRAMINO_POSITIONS; i >= 0; i--) {
-	if (glass[(t -> y) + tetraminos[t -> type][t -> orientation][i].y + 1] \
-		[(t -> x) + tetraminos[t -> type][t -> orientation][i].x]) {
+    for(int i = TETRAMINO_POSITIONS - 1; i >= 0; i--) {
+	if (glass[(t -> y) + tetraminos[t -> type][t -> orientation][i].y] \
+		[(t -> x) + tetraminos[t -> type][t -> orientation][i].x + 1]) {
 		t -> down = FALSE;
 	};
 	if (glass[(t -> y) + tetraminos[t -> type][t -> orientation][i].y] \
@@ -334,28 +216,10 @@ void check_move(tetramino_t *t) {
 		t -> right = FALSE;
 	};
 	if (glass[(t -> y) + tetraminos[t -> type][t -> orientation][i].y] \
-		[(t -> x) + tetraminos[t -> type][t -> orientation][i].x] ) {
+		[(t -> x) + tetraminos[t -> type][t -> orientation][i].x]) {
 		t -> left = FALSE;
 	};
     }
-
-    /*
-    for(int i = FIGURE_SIZE - 1; i >= 0; i--) {
-        for(int j = FIGURE_SIZE - 1; j >= 0; j--) {
-           if (t -> shape[i][j])  {
-               if (glass[(t -> y) + i][(t -> x) + j + 1]) {
-                   t -> down = FALSE;
-               }
-               if (glass[(t -> y) + i][(t -> x) + j]) {
-                   t -> left = FALSE;
-               }
-               if (glass[(t -> y) + i][(t -> x) + j + 2]) {
-                   t -> right = FALSE;
-               }
-           }
-       }
-    }
-    */
 
 }
 
@@ -372,8 +236,10 @@ void step() {
         tetramino -> y--;
         fix_figure_in_glass();
 
-        //*tetramino = figures[game -> next_tetramino];
         tetramino -> type = game -> next_tetramino;
+        tetramino -> orientation = 0;
+        tetramino -> y = START_Y_POS;
+        tetramino -> x = START_X_POS;
         game -> next_tetramino = rand() % 7;
     }
 
@@ -387,28 +253,11 @@ void tick() {
     }
 }
 
-//void rotate(figure_t *t) {
 void rotate(tetramino_t *t) {
-    //figure_t temp;
-    //temp = *t;
     (t -> orientation == 3) ? t -> orientation = 0: t -> orientation++;
 
-    /*
-    for (int i = 0; i < FIGURE_SIZE; i++) {
-        for (int j = 0; j < FIGURE_SIZE; j++) {
-            if ((i - 2) == 0) temp.shape[3 - j][2] = t -> shape[i][j];
-            if ((i - 2) == 1) temp.shape[3 - j][3] = t -> shape[i][j];
-            if ((i - 2) == -1) temp.shape[3 - j][1] = t -> shape[i][j];
-            if ((i - 2) == -2) temp.shape[3 - j][0] = t -> shape[i][j];
-        }
-    }
-    */
-
-    //*t = temp;
-    //check_move(t);
     check_move(t);
 
-    //if (t -> down && t -> right && t -> left) t -> rotate = TRUE;
     if (t -> down && t -> right && t -> left) t -> rotate = TRUE;
 }
 
