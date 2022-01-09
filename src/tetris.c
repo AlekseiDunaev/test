@@ -1,4 +1,4 @@
-#include <ncurses.h> 
+//#include <ncurses.h> 
 #include <stdlib.h>
 
 #include <string.h>
@@ -75,8 +75,8 @@ int glass_init[GLASS_HEIGHT + 1][GLASS_WIDTH + 2] = {
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //16
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //17
 	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //18
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //19
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, //20
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //19
+    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, //20
 };
 
 int glass[GLASS_HEIGHT + 1][GLASS_WIDTH + 2];
@@ -177,19 +177,27 @@ void paint() {
     waddstr(win_info, "NEXT");
 
     for(int i = 0; i < FIGURE_SIZE; i++) {
-	wmove(win_info, tetraminos[game -> next_tetramino][0][i].y + 3, \
-	tetraminos[game -> next_tetramino][0][i].x + 1);
+	wmove(win_info, tetraminos[game -> next_tetramino][0][i].y + 1, \
+	tetraminos[game -> next_tetramino][0][i].x + 6);
 	waddch(win_info, ' ' | A_REVERSE | COLOR_PAIR(3));
     }
  
-    wmove(win_info, 8, 1);
+    wmove(win_info, 5, 1);
     waddstr(win_info, "SCORE");
  
-    wmove(win_info, 8, 7);
+    wmove(win_info, 5, 7);
     wattron(win_info, COLOR_PAIR(2));
     wprintw(win_info, "%d", (game -> score));
     wattroff(win_info, COLOR_PAIR(2));
-    wattron(win_info, A_BOLD | COLOR_PAIR(1));
+
+	wmove(win_info, 7, 1);
+	waddstr(win_info, "QUIT: q");
+	wmove(win_info, 8, 1);
+	waddstr(win_info, "PAUSED: p");
+	wmove(win_info, 9, 1);
+	waddstr(win_info, "CHANGE FIGURE: c");
+    
+	wattron(win_info, A_BOLD | COLOR_PAIR(1));
 
     box(win, 0, 0);
     box(win_info, 0, 0);
@@ -275,6 +283,5 @@ void quit() {
     free(game);
 
     endwin();
-
 }
 

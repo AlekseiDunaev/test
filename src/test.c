@@ -9,17 +9,17 @@
 
 void init_ncurses() {
     
-    if (!initscr()) {
-        fprintf(stderr, "Error initialising ncurses.\n");
-        exit(-1);
-    }
+	if (!initscr()) {
+		fprintf(stderr, "Error initialising ncurses.\n");
+		exit(-1);
+	}
 
-    if (!has_colors()) {
-        fprintf(stderr, "Error inititialising colors.\n");
-        exit(-1);
-    }
+	if (!has_colors()) {
+		fprintf(stderr, "Error inititialising colors.\n");
+			exit(-1);
+	}
 
-    start_color();
+	start_color();
 
     init_pair(1, COLOR_BLUE, COLOR_BLACK);
     init_pair(2, COLOR_RED, COLOR_BLACK);
@@ -35,7 +35,7 @@ void init_ncurses() {
 
 void init_windows() {
     
-    int offsety = (LINES - HEIGH_WINDOW) / 2;
+	int offsety = (LINES - HEIGH_WINDOW) / 2;
     int offsetx = (COLS - WIDTH_WINDOW) / 2;
 
     win = newwin(HEIGH_WINDOW, WIDTH_WINDOW, offsety, offsetx);
@@ -155,15 +155,15 @@ int main(int argc, char** argv) {
         }
 
         check_move(tetramino);
+
         if (!(tetramino -> down) && (tetramino -> y) == 0) {
-		fix_figure_in_glass();
-		game_over();
-        }
-        else paint_figure();
+			fix_figure_in_glass();
+			game_over();
+        } else paint_figure();
 
         tick(tetramino);
 
-	if (game -> is_paint) {
+		if (game -> is_paint) {
             paint();
             game -> is_paint = FALSE;
         }

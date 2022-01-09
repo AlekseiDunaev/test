@@ -5,9 +5,9 @@
 #include <ncurses.h>
 
 #define HEIGH_WINDOW 23
-#define WIDTH_WINDOW 40
-#define HEIGH_WINDOW_INFO 10
-#define WIDTH_WINDOW_INFO 25
+#define WIDTH_WINDOW 35
+#define HEIGH_WINDOW_INFO 11
+#define WIDTH_WINDOW_INFO 20
 #define GLASS_HEIGHT 20
 #define GLASS_WIDTH 10
 #define NUM_TETRAMINO 7
@@ -18,10 +18,6 @@
 #define START_X_POS 4
 #define FIGURE_SIZE 4
 #define MAX_LEVEL 19
-
-extern int SPEED_LEVELS[MAX_LEVEL + 1];
-
-extern int LINES_BONUS[5];
 
 typedef struct {
 	int y, x;
@@ -42,6 +38,8 @@ typedef struct {
     bool is_paint;
 } game_t;
 
+extern int SPEED_LEVELS[MAX_LEVEL + 1];
+extern int LINES_BONUS[5];
 extern point_t tetraminos[NUM_TETRAMINO][TETRAMINO_POSITIONS][POINTS];
 
 WINDOW *win, *win_info;
